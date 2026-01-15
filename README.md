@@ -1,6 +1,6 @@
 # Sri Lanka Fuel Price Tracker 🇱🇰 ⛽
 
-A modern, SEO-optimized web application for tracking fuel prices in Sri Lanka. Built with **Bulma CSS**, **Vue.js 3**, and **Chart.js** for an exceptional user experience.
+A modern, application for tracking fuel prices in Sri Lanka. Built with **Bulma CSS**, **Vue.js 3**, and **Chart.js** for an exceptional user experience.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
@@ -31,50 +31,6 @@ A modern, SEO-optimized web application for tracking fuel prices in Sri Lanka. B
 - A modern web browser (Chrome, Firefox, Safari, Edge)
 - A local web server (optional, for development)
 
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/fuelprice.git
-cd fuelprice
-```
-
-2. Open `index.html` in your browser or use a local server:
-
-**Using Python:**
-```bash
-python3 -m http.server 8000
-```
-
-**Using Node.js (http-server):**
-```bash
-npx http-server -p 8000
-```
-
-**Using PHP:**
-```bash
-php -S localhost:8000
-```
-
-3. Visit `http://localhost:8000` in your browser
-
-## 📁 Project Structure
-
-```
-fuelprice/
-├── index.html          # Main HTML file with SEO meta tags
-├── styles.css          # Custom CSS with modern design system
-├── app.js              # Vue.js application logic
-├── data/               # JSON data files
-│   ├── petrol92.json   # Petrol 92 Octane data
-│   ├── petrol95.json   # Petrol 95 Octane data
-│   ├── autodiesel.json # Auto Diesel data
-│   ├── superdiesel.json# Super Diesel data
-│   └── kerosene.json   # Kerosene data
-├── robots.txt          # SEO robots file
-├── sitemap.xml         # SEO sitemap
-└── README.md           # This file
-```
 
 ## 📊 Data Format
 
@@ -134,35 +90,6 @@ Example:
 4. Download the updated JSON file
 5. Replace the file in the `data/` directory
 
-## 🎨 Customization
-
-### Colors
-
-Edit the CSS variables in `styles.css`:
-
-```css
-:root {
-    --primary-color: #3273dc;
-    --gradient-start: #667eea;
-    --gradient-end: #764ba2;
-}
-```
-
-### Fuel Type Icons
-
-Update the `icon` and `iconClass` in the JSON files to change fuel type icons.
-
-## 🔍 SEO Features
-
-- ✅ Comprehensive meta tags (title, description, keywords)
-- ✅ Open Graph tags for social media sharing
-- ✅ Twitter Card support
-- ✅ Structured data (JSON-LD) for search engines
-- ✅ Semantic HTML5 markup
-- ✅ Mobile-friendly viewport settings
-- ✅ Canonical URLs
-- ✅ robots.txt and sitemap.xml
-
 ## 📱 Browser Support
 
 - Chrome (latest)
@@ -205,7 +132,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👨‍💻 Author
 
-Your Name - [@yourhandle](https://twitter.com/yourhandle)
+Your Name - [@yourhandle](https://twitter.com/xmadusanka)
 
 ## 🙏 Acknowledgments
 
@@ -217,7 +144,7 @@ Your Name - [@yourhandle](https://twitter.com/yourhandle)
 
 ## 📞 Support
 
-For support, email support@yourwebsite.com or open an issue in the repository.
+For support, email madusanka@duck.com or open an issue in the repository.
 
 ---
 
