@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Update Fuel Prices</title>
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .fuel-update-card {
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .fuel-header {
+            padding: 1.5rem;
+            border-radius: 12px 12px 0 0;
+            color: white;
+            font-weight: 600;
+        }
+
+        .header-petrol92 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .header-petrol95 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .header-autodiesel {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .header-superdiesel {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .header-kerosene {
+            background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+        }
+
+        .notification.is-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="admin-app">
+        <!-- Success Notification -->
+        <div v-if="showNotification" class="notification is-success">
+            <button class="delete" @click="showNotification = false"></button>
+            <strong>Success!</strong> {{ notificationMessage }}
+        </div>
+
+        <div class="admin-container">
+            <!-- Header -->
+            <div class="box has-text-centered mb-6">
+                <h1 class="title is-2">
+                    <i class="fas fa-tools has-text-primary"></i> Fuel Price Admin Panel
+                </h1>
+                <p class="subtitle is-5">Update fuel prices and manage historical data</p>
+                <button class="button is-link" @click="exportAllData">
+                    <span class="icon"><i class="fas fa-download"></i></span>
+                    <span>Export All Data</span>
+                </button>
+            </div>
+
+            <!-- Fuel Update Forms -->
+            <div v-for="fuel in fuelTypes" :key="fuel.id" class="fuel-update-card">
+                <div class="box">
+                    <div :class="['fuel-header', 'header-' + fuel.id]">
+                        <div class="level is-mobile">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <span class="icon is-large mr-3">
+                                        <i class="fas fa-2x" :class="fuel.icon"></i>
+                                    </span>
+                                    <div>
+                                        <h3 class="title is-4 has-text-white mb-1">{{ fuel.name }}</h3>
+                                        <p class="subtitle is-6 has-text-white-ter">{{ fuel.type }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <div class="has-text-right">
+                                        <p class="is-size-7 has-text-white-ter">Current Price</p>
+                                        <p class="title is-3 has-text-white">Rs. {{ fuel.currentPrice }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="columns">
+                            <div class="column is-4">
+                                <div class="field">
+                                    <label class="label">New Price (Rs.)</label>
+                                    <div class="control has-icons-left">
+                                        <input class="input is-medium" type="number" step="0.01"
+                                            v-model.number="fuel.newPrice" placeholder="Enter new price">
+                                        <span class="icon is-left">
+                                            <i class="fas fa-rupee-sign"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-3">
+                                <div class="field">
+                                    <label class="label">Change</label>
+                                    <div class="control">
+                                        <input class="input is-medium" type="text" :value="calculateChange(fuel)"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-3">
+                                <div class="field">
+                                    <label class="label">Change %</label>
+                                    <div class="control">
+                                        <input class="input is-medium" type="text" :value="calculateChangePercent(fuel)"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column is-2">
+                                <div class="field">
+                                    <label class="label">&nbsp;</label>
+                                    <div class="control">
+                                        <button class="button is-primary is-medium is-fullwidth"
+                                            @click="updatePrice(fuel)" :disabled="!fuel.newPrice">
+                                            <span class="icon"><i class="fas fa-save"></i></span>
+                                            <span>Update</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <p class="has-text-grey is-size-7">
+                                <i class="far fa-clock"></i> Last updated: {{ fuel.lastUpdated }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="box">
+                <h3 class="title is-4">
+                    <i class="fas fa-info-circle has-text-info"></i> Instructions
+                </h3>
+                <div class="content">
+                    <ol>
+                        <li>Enter the new price for each fuel type in the "New Price" field</li>
+                        <li>The change and percentage will be calculated automatically</li>
+                        <li>Click the "Update" button to save the new price</li>
+                        <li>The price will be added to the history and the JSON file will be updated</li>
+                        <li>Use "Export All Data" to download all fuel data as JSON files</li>
+                    </ol>
+                    <div class="notification is-warning is-light">
+                        <strong>Note:</strong> This is a client-side demo. In production, you would need a backend API
+                        to save the data permanently.
+                        Currently, changes are stored in browser memory and will be lost on page refresh.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vue.js 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    fuelTypes: [],
+                    showNotification: false,
+                    notificationMessage: ''
+                };
+            },
+
+            mounted() {
+                this.loadFuelData();
+            },
+
+            methods: {
+                async loadFuelData() {
+                    const fuelIds = ['petrol92', 'petrol95', 'autodiesel', 'superdiesel', 'kerosene'];
+                    const promises = fuelIds.map(id => this.loadFuelType(id));
+
+                    try {
+                        const results = await Promise.all(promises);
+                        this.fuelTypes = results.map(fuel => ({
+                            ...fuel,
+                            newPrice: null
+                        }));
+                    } catch (error) {
+                        console.error('Error loading fuel data:', error);
+                    }
+                },
+
+                async loadFuelType(id) {
+                    try {
+                        const response = await fetch(`data/${id}.json`);
+                        const data = await response.json();
+
+                        // Calculate derived values from history
+                        if (data.history && data.history.length > 0) {
+                            // Get current price from last entry in history
+                            const currentPrice = data.history[data.history.length - 1].price;
+
+                            // Get previous price (second to last entry, or same as current if only one entry)
+                            const previousPrice = data.history.length > 1
+                                ? data.history[data.history.length - 2].price
+                                : currentPrice;
+
+                            // Calculate change
+                            const change = parseFloat((currentPrice - previousPrice).toFixed(2));
+
+                            // Calculate change percentage
+                            const changePercent = previousPrice !== 0
+                                ? parseFloat(((change / previousPrice) * 100).toFixed(2))
+                                : 0;
+
+                            // Get last updated date from last entry
+                            const lastUpdated = data.history[data.history.length - 1].date;
+
+                            // Add calculated values to data object
+                            data.currentPrice = currentPrice;
+                            data.change = change;
+                            data.changePercent = changePercent;
+                            data.lastUpdated = lastUpdated;
+                        }
+
+                        return data;
+                    } catch (error) {
+                        console.error(`Error loading ${id}:`, error);
+                        return null;
+                    }
+                },
+
+                calculateChange(fuel) {
+                    if (!fuel.newPrice) return 'Rs. 0.00';
+                    const change = fuel.newPrice - fuel.currentPrice;
+                    return `Rs. ${change.toFixed(2)}`;
+                },
+
+                calculateChangePercent(fuel) {
+                    if (!fuel.newPrice) return '0.00%';
+                    const change = fuel.newPrice - fuel.currentPrice;
+                    const percent = (change / fuel.currentPrice) * 100;
+                    return `${percent.toFixed(2)}%`;
+                },
+
+                updatePrice(fuel) {
+                    if (!fuel.newPrice) return;
+
+                    const today = new Date().toISOString().split('T')[0];
+
+                    // Add to history
+                    fuel.history.push({
+                        date: today,
+                        price: fuel.newPrice
+                    });
+
+                    // Keep only last 30 days
+                    if (fuel.history.length > 30) {
+                        fuel.history = fuel.history.slice(-30);
+                    }
+
+                    // Recalculate derived values
+                    const currentPrice = fuel.history[fuel.history.length - 1].price;
+                    const previousPrice = fuel.history.length > 1
+                        ? fuel.history[fuel.history.length - 2].price
+                        : currentPrice;
+
+                    fuel.currentPrice = currentPrice;
+                    fuel.change = parseFloat((currentPrice - previousPrice).toFixed(2));
+                    fuel.changePercent = previousPrice !== 0
+                        ? parseFloat(((fuel.change / previousPrice) * 100).toFixed(2))
+                        : 0;
+                    fuel.lastUpdated = today;
+
+                    // Reset new price
+                    fuel.newPrice = null;
+
+                    // Show notification
+                    this.notificationMessage = `${fuel.name} price updated successfully!`;
+                    this.showNotification = true;
+
+                    setTimeout(() => {
+                        this.showNotification = false;
+                    }, 3000);
+
+                    // Download updated JSON file
+                    this.downloadJSON(fuel, `${fuel.id}.json`);
+                },
+
+                downloadJSON(data, filename) {
+                    // Create a clean copy without calculated fields
+                    const cleanData = {
+                        id: data.id,
+                        name: data.name,
+                        type: data.type,
+                        icon: data.icon,
+                        iconClass: data.iconClass,
+                        history: data.history
+                    };
+
+                    const json = JSON.stringify(cleanData, null, 4);
+                    const blob = new Blob([json], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                },
+
+                exportAllData() {
+                    this.fuelTypes.forEach(fuel => {
+                        this.downloadJSON(fuel, `${fuel.id}.json`);
+                    });
+
+                    this.notificationMessage = 'All data exported successfully!';
+                    this.showNotification = true;
+
+                    setTimeout(() => {
+                        this.showNotification = false;
+                    }, 3000);
+                }
+            }
+        }).mount('#admin-app');
+    </script>
+</body>
+
+</html>
