@@ -11,7 +11,6 @@ A modern, application for tracking fuel prices in Sri Lanka. Built with **Bulma 
 - 📊 **Interactive Price Charts** - Visualize 30-day price history with Chart.js
 - 📱 **Mobile-Friendly** - Fully responsive design that works on all devices
 - 🎨 **Modern UI** - Beautiful gradient designs with smooth animations
-- 🔍 **SEO Optimized** - Comprehensive meta tags, structured data, and Open Graph support
 - 💾 **JSON Data Storage** - Separate JSON files for each fuel type
 - 📈 **Price Statistics** - View highest, lowest, and average prices
 - 🚀 **Fast & Lightweight** - No build process required, runs directly in the browser
