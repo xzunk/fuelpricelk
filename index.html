@@ -1,48 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta Tags -->
     <title>Sri Lanka Fuel Prices Today - Live Petrol & Diesel Rates 2026</title>
-    <meta name="description" content="Check latest fuel prices in Sri Lanka. Live updates for Petrol 92, Petrol 95, Auto Diesel, Super Diesel, and Kerosene with price history charts and trends.">
-    <meta name="keywords" content="Sri Lanka fuel prices, petrol price Sri Lanka, diesel price Sri Lanka, fuel rates, octane 92, octane 95, kerosene price">
+    <meta name="description"
+        content="Check latest fuel prices in Sri Lanka. Live updates for Petrol 92, Petrol 95, Auto Diesel, Super Diesel, and Kerosene with price history charts and trends.">
+    <meta name="keywords"
+        content="Sri Lanka fuel prices, petrol price Sri Lanka, diesel price Sri Lanka, fuel rates, octane 92, octane 95, kerosene price">
     <meta name="author" content="Sri Lanka Fuel Price Tracker">
     <meta name="robots" content="index, follow">
-    
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Sri Lanka Fuel Prices Today - Live Petrol & Diesel Rates">
-    <meta property="og:description" content="Check latest fuel prices in Sri Lanka with historical price charts and trends.">
+    <meta property="og:description"
+        content="Check latest fuel prices in Sri Lanka with historical price charts and trends.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://yourwebsite.com">
     <meta property="og:image" content="https://yourwebsite.com/og-image.jpg">
-    
+
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Sri Lanka Fuel Prices Today">
     <meta name="twitter:description" content="Check latest fuel prices in Sri Lanka with historical charts.">
-    
+
     <!-- Canonical URL -->
     <link rel="canonical" href="https://yourwebsite.com">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png">
-    
+
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles.css">
-    
+
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
     {
@@ -59,6 +64,7 @@
     }
     </script>
 </head>
+
 <body>
     <div id="app">
         <!-- Header -->
@@ -92,7 +98,7 @@
         </nav>
 
         <!-- Hero Section -->
-        <section class="hero is-primary is-medium hero-gradient">
+        <section class="hero is-primary is-medium">
             <div class="hero-body">
                 <div class="container has-text-centered">
                     <h1 class="title is-1 is-spaced animate-fade-in">
@@ -114,11 +120,9 @@
                 <h2 class="title is-2 has-text-centered mb-6">
                     <i class="fas fa-rupee-sign has-text-primary"></i> Current Fuel Prices
                 </h2>
-                
+
                 <div class="columns is-multiline">
-                    <div class="column is-12-mobile is-6-tablet is-4-desktop" 
-                         v-for="fuel in fuelTypes" 
-                         :key="fuel.id">
+                    <div class="column is-12-mobile is-6-tablet is-4-desktop" v-for="fuel in fuelTypes" :key="fuel.id">
                         <div class="card fuel-card" @click="showChart(fuel.id)">
                             <div class="card-content">
                                 <div class="media">
@@ -132,26 +136,26 @@
                                         <p class="subtitle is-6 has-text-grey">{{ fuel.type }}</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="content">
                                     <div class="price-display">
-                                        <span class="is-size-2 has-text-weight-bold has-text-primary">
+                                        <span class="is-size-2 has-text-weight-bold">
                                             Rs. {{ fuel.currentPrice }}
                                         </span>
                                         <span class="is-size-6 has-text-grey">/Liter</span>
                                     </div>
-                                    
-                                    <div class="price-change mt-3" :class="getPriceChangeClass(fuel.change)">
+
+                                    <div class="price-change mt-3">
                                         <i class="fas" :class="fuel.change >= 0 ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
                                         <span class="ml-2">
-                                            Rs. {{ Math.abs(fuel.change) }} 
+                                            Rs. {{ Math.abs(fuel.change) }}
                                             ({{ fuel.changePercent }}%)
                                         </span>
                                     </div>
-                                    
+
                                     <div class="mt-4">
-                                        <button class="button is-primary is-fullwidth is-outlined" 
-                                                @click.stop="showChart(fuel.id)">
+                                        <button class="button is-primary is-fullwidth is-outlined"
+                                            @click.stop="showChart(fuel.id)">
                                             <span class="icon">
                                                 <i class="fas fa-chart-line"></i>
                                             </span>
@@ -172,12 +176,10 @@
                 <h2 class="title is-2 has-text-centered mb-6">
                     <i class="fas fa-chart-area has-text-info"></i> Price History & Trends
                 </h2>
-                
+
                 <div class="tabs is-centered is-boxed is-medium">
                     <ul>
-                        <li v-for="fuel in fuelTypes" 
-                            :key="fuel.id" 
-                            :class="{'is-active': selectedFuel === fuel.id}"
+                        <li v-for="fuel in fuelTypes" :key="fuel.id" :class="{'is-active': selectedFuel === fuel.id}"
                             @click="selectFuel(fuel.id)">
                             <a>
                                 <span class="icon is-small">
@@ -188,34 +190,34 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="box chart-container">
                     <canvas id="priceChart"></canvas>
                 </div>
-                
+
                 <div class="columns is-multiline mt-5">
                     <div class="column is-3">
                         <div class="box has-text-centered stat-box">
                             <p class="heading">Highest Price</p>
-                            <p class="title is-4 has-text-danger">Rs. {{ stats.highest }}</p>
+                            <p class="title is-4 has-text-primary">Rs. {{ stats.highest }}</p>
                         </div>
                     </div>
                     <div class="column is-3">
                         <div class="box has-text-centered stat-box">
                             <p class="heading">Lowest Price</p>
-                            <p class="title is-4 has-text-success">Rs. {{ stats.lowest }}</p>
+                            <p class="title is-4 has-text-primary">Rs. {{ stats.lowest }}</p>
                         </div>
                     </div>
                     <div class="column is-3">
                         <div class="box has-text-centered stat-box">
                             <p class="heading">Average Price</p>
-                            <p class="title is-4 has-text-info">Rs. {{ stats.average }}</p>
+                            <p class="title is-4 has-text-primary">Rs. {{ stats.average }}</p>
                         </div>
                     </div>
                     <div class="column is-3">
                         <div class="box has-text-centered stat-box">
                             <p class="heading">Total Changes</p>
-                            <p class="title is-4 has-text-warning">{{ stats.changes }}</p>
+                            <p class="title is-4 has-text-primary">{{ stats.changes }}</p>
                         </div>
                     </div>
                 </div>
@@ -232,8 +234,8 @@
                         </h2>
                         <div class="content is-medium">
                             <p>
-                                Welcome to Sri Lanka's most comprehensive fuel price tracking platform. 
-                                We provide real-time updates on fuel prices across all major fuel types 
+                                Welcome to Sri Lanka's most comprehensive fuel price tracking platform.
+                                We provide real-time updates on fuel prices across all major fuel types
                                 in Sri Lanka.
                             </p>
                             <ul>
@@ -268,32 +270,18 @@
         <footer class="footer has-background-dark has-text-light">
             <div class="content has-text-centered">
                 <p class="has-text-light">
-                    <strong class="has-text-light">Sri Lanka Fuel Price Tracker</strong> 
+                    <strong class="has-text-light">Sri Lanka Fuel Price Tracker</strong>
                     <br>
                     <span class="is-size-7">
                         Providing accurate and timely fuel price information for Sri Lanka
                     </span>
                 </p>
                 <p class="is-size-7 has-text-grey-light">
-                    <i class="far fa-copyright"></i> 2026 All rights reserved. 
+                    <i class="far fa-copyright"></i> 2026 All rights reserved.
                     Data updated regularly from official sources.
                 </p>
                 <div class="social-links mt-4">
-                    <a class="button is-light is-rounded mx-1" href="#" aria-label="Facebook">
-                        <span class="icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </span>
-                    </a>
-                    <a class="button is-light is-rounded mx-1" href="#" aria-label="Twitter">
-                        <span class="icon">
-                            <i class="fab fa-twitter"></i>
-                        </span>
-                    </a>
-                    <a class="button is-light is-rounded mx-1" href="#" aria-label="Instagram">
-                        <span class="icon">
-                            <i class="fab fa-instagram"></i>
-                        </span>
-                    </a>
+
                 </div>
             </div>
         </footer>
@@ -301,11 +289,12 @@
 
     <!-- Vue.js 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-    
+
     <!-- Custom JavaScript -->
     <script src="app.js"></script>
 </body>
+
 </html>

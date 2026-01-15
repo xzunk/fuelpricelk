@@ -6,7 +6,6 @@ createApp({
             menuActive: false,
             selectedFuel: 'petrol92',
             fuelTypes: [],
-            chart: null,
             stats: {
                 highest: 0,
                 lowest: 0,
@@ -15,6 +14,10 @@ createApp({
             },
             lastUpdated: ''
         };
+    },
+
+    created() {
+        this.chart = null;
     },
 
     mounted() {
@@ -210,6 +213,10 @@ createApp({
             const ctx = document.getElementById('priceChart');
             if (!ctx) return;
 
+            if (this.chart) {
+                this.chart.destroy();
+            }
+
             this.chart = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -217,15 +224,15 @@ createApp({
                     datasets: [{
                         label: 'Price (Rs.)',
                         data: [],
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderColor: '#FFD700',
+                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
                         borderWidth: 3,
                         fill: true,
                         tension: 0.4,
                         pointRadius: 4,
                         pointHoverRadius: 6,
-                        pointBackgroundColor: '#667eea',
-                        pointBorderColor: '#fff',
+                        pointBackgroundColor: '#000000',
+                        pointBorderColor: '#FFD700',
                         pointBorderWidth: 2
                     }]
                 },
@@ -237,6 +244,7 @@ createApp({
                             display: true,
                             position: 'top',
                             labels: {
+                                color: '#FFFFFF', // White text
                                 font: {
                                     family: 'Inter',
                                     size: 14,
@@ -246,7 +254,9 @@ createApp({
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            titleColor: '#FFD700',
+                            bodyColor: '#FFFFFF',
                             padding: 12,
                             titleFont: {
                                 size: 14,
@@ -255,7 +265,7 @@ createApp({
                             bodyFont: {
                                 size: 13
                             },
-                            borderColor: '#667eea',
+                            borderColor: '#FFD700',
                             borderWidth: 1,
                             displayColors: false,
                             callbacks: {
@@ -269,6 +279,7 @@ createApp({
                         y: {
                             beginAtZero: false,
                             ticks: {
+                                color: '#B0B0B0', // Grey text
                                 callback: function (value) {
                                     return 'Rs. ' + value;
                                 },
@@ -278,11 +289,12 @@ createApp({
                                 }
                             },
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                                color: 'rgba(255, 255, 255, 0.1)' // Light grey grid
                             }
                         },
                         x: {
                             ticks: {
+                                color: '#B0B0B0', // Grey text
                                 font: {
                                     family: 'Inter',
                                     size: 12
@@ -320,19 +332,16 @@ createApp({
             this.chart.data.datasets[0].data = fuel.history.map(h => h.price);
             this.chart.data.datasets[0].label = `${fuel.name} Price (Rs.)`;
 
-            // Update chart colors based on fuel type
-            const colors = {
-                petrol92: { border: '#f5576c', bg: 'rgba(245, 87, 108, 0.1)' },
-                petrol95: { border: '#00f2fe', bg: 'rgba(0, 242, 254, 0.1)' },
-                autodiesel: { border: '#38f9d7', bg: 'rgba(56, 249, 215, 0.1)' },
-                superdiesel: { border: '#fee140', bg: 'rgba(254, 225, 64, 0.1)' },
-                kerosene: { border: '#30cfd0', bg: 'rgba(48, 207, 208, 0.1)' }
-            };
+            // Strict Black & Yellow Theme
+            const themeColor = '#FFD700'; // Yellow
+            const themeBg = 'rgba(255, 215, 0, 0.1)'; // Yellow transparent
 
-            const color = colors[this.selectedFuel] || colors.petrol92;
-            this.chart.data.datasets[0].borderColor = color.border;
-            this.chart.data.datasets[0].backgroundColor = color.bg;
-            this.chart.data.datasets[0].pointBackgroundColor = color.border;
+            this.chart.data.datasets[0].borderColor = themeColor;
+            this.chart.data.datasets[0].backgroundColor = themeBg;
+            this.chart.data.datasets[0].pointBackgroundColor = '#000000'; // Black points
+            this.chart.data.datasets[0].pointBorderColor = themeColor; // Yellow borders
+            this.chart.data.datasets[0].pointHoverBackgroundColor = themeColor;
+            this.chart.data.datasets[0].pointHoverBorderColor = '#FFFFFF';
 
             this.chart.update();
 
