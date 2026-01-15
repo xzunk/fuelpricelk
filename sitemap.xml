@@ -7,7 +7,7 @@
     
     <!-- Homepage -->
     <url>
-        <loc>https://yourwebsite.com/</loc>
+        <loc>https://xzunk.github.io/fuelpricelk/</loc>
         <lastmod>2026-01-15</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
@@ -15,7 +15,7 @@
     
     <!-- Current Prices Section -->
     <url>
-        <loc>https://yourwebsite.com/#prices</loc>
+        <loc>https://xzunk.github.io/fuelpricelk/</loc>
         <lastmod>2026-01-15</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
@@ -23,7 +23,7 @@
     
     <!-- Price History Charts Section -->
     <url>
-        <loc>https://yourwebsite.com/#charts</loc>
+        <loc>https://xzunk.github.io/fuelpricelk/</loc>
         <lastmod>2026-01-15</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -31,7 +31,7 @@
     
     <!-- About Section -->
     <url>
-        <loc>https://yourwebsite.com/#about</loc>
+        <loc>https://xzunk.github.io/fuelpricelk/</loc>
         <lastmod>2026-01-15</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>

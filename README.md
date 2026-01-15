@@ -83,12 +83,7 @@ Example:
 }
 ```
 
-**Using the Admin Panel:**
-1. Open `admin.html` in your browser
-2. Enter the new price for each fuel type
-3. Click "Update" - the price will be added to history automatically
-4. Download the updated JSON file
-5. Replace the file in the `data/` directory
+
 
 ## 📱 Browser Support
 

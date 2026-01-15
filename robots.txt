@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://yourwebsite.com/sitemap.xml
+Sitemap: https://xzunk.github.io/fuelpricelk//sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 10
